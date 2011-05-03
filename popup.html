@@ -1,0 +1,112 @@
+<style>
+body {
+  min-width:350px;
+  overflow-x:hidden;
+  
+}
+
+
+p {
+text-align:left;
+font-family:"Calibri", Times, serif;
+font-size: 14px;
+margin: 2px
+}
+
+div {
+border-style: solid;
+border-width: 1px;
+padding: 2px;
+margin: 3px;
+border-radius: 5px;
+background-color: #EEEEEF;
+
+}
+
+.note {
+font-size: 12px;
+font-style: italic;
+}
+</style>
+<script>
+
+var request = new XMLHttpRequest();
+
+
+query = "http://en.wikipedia.org/w/api.php?action=feedwatchlist&hours=72";
+
+if(localStorage["disp_all_rev"]=="true")
+   query +="&allrev";
+
+
+request.open("GET",query,true);
+
+request.onload = showlist;
+request.send();
+
+function showlist () {
+var watchlist = request.responseXML.getElementsByTagName("item");
+var aSettingsLink = document.createElement("a");
+aSettingsLink.setAttribute('href',"options.html");
+aSettingsLink.innerText = "Settings";
+document.body.appendChild(aSettingsLink);
+var end = parseInt(localStorage["num_display_elements"]);
+if (watchlist.length < end ){
+ end = watchlist.length;
+} 
+//for (var i = 0, temp; temp = watchlist[i]; i++){
+  for (var i =0; i < end;i++){
+   temp = watchlist[i]
+   var iDiv = document.createElement("div")
+
+   
+   var pText = document.createElement("p");
+   var pTitleLink = document.createElement("a");
+   if (watchlist[0].childNodes[1].textContent == "Error (wlnotloggedin)"){
+   //loginWindow = window.open("http://en.wikipedia.org/w/index.php?title=Special:UserLogin&action=submitlogin", "Login");
+   //loginWindow.createPopup();
+   pText.appendChild(document.createTextNode("You are not currently logged in. Click to login "));
+   pTitleLink.setAttribute('href',"http://en.wikipedia.org/w/index.php?title=Special:UserLogin&action=submitlogin");
+   pTitleLink.setAttribute('target',"_blank");
+   pTitleLink.setAttribute('onClick',"Javascript:window.close()");
+   pTitleLink.innerText = "here";
+   pText.appendChild(pTitleLink);
+   iDiv.appendChild(pText);
+   document.body.appendChild(iDiv);
+   return;
+   
+}
+
+   
+
+
+   var pHistoryLink = document.createElement("a");
+
+   pHistoryLink.setAttribute('href',"http://en.wikipedia.org/w/index.php?title="+temp.childNodes[1].textContent+"&action=history");
+   pHistoryLink.setAttribute('target',"_blank");
+   pHistoryLink.innerText = temp.childNodes[9].textContent;
+   
+   var pChangedOn = document.createTextNode("Changed on (Click to see history): ");
+   //var pClickHere = document.createTextNode("(Click to see history)");
+   
+   pText.appendChild(pChangedOn);
+   pText.appendChild(pHistoryLink);
+   //pText.appendChild(pClickHere);
+
+   pTitleLink.setAttribute('href',temp.childNodes[5].textContent);
+   pTitleLink.setAttribute('target',"_blank");
+   pTitleLink.innerText = temp.childNodes[1].textContent;
+   
+   
+   iDiv.appendChild(pTitleLink);
+   iDiv.appendChild(pText);
+   
+   document.body.appendChild(iDiv);
+}
+}
+
+				
+
+
+
+</script>

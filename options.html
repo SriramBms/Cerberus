@@ -1,0 +1,78 @@
+<html>
+<head><title>Wiki Watchdog Options</title></head>
+<script type="text/javascript">
+
+// Saves options to localStorage.
+function save_options() {
+  var select = document.getElementById("numList");
+  var numDispElements = select.children[select.selectedIndex].value;
+  localStorage["num_display_elements"] = numDispElements;
+
+  var check = document.getElementById("checkbox").checked;
+  if ( Boolean(check) == true)
+     localStorage["disp_all_rev"] = true;
+  else
+     localStorage["disp_all_rev"] = false;
+
+  close_options();
+}
+
+function close_options() {
+window.close();
+}
+
+// Restores select box state to saved value from localStorage.
+function restore_options() {
+  var num_elements = localStorage["num_display_elements"];
+  var checked_state = localStorage["disp_all_rev"];
+  
+  var check = document.getElementById("checkbox");
+  if (checked_state == "true")
+      check.checked = true;
+  else
+      check.checked = false;   //takes care of undef value
+
+
+  if (!num_elements) {
+    num_elements = 10;
+    return;
+  }
+  var select = document.getElementById("numList");
+  for (var i = 0; i < select.children.length; i++) {
+    var child = select.children[i];
+    if (child.value == num_elements) {
+      child.selected = "true";
+      break;
+    }
+  }
+  
+  
+  
+  
+  
+
+}
+
+</script>
+
+<body onload="restore_options()" style ="width: 350px; height: 400px">
+
+<! TODO: Use CSS for formatting >
+
+<div align="center">
+<b>Cerberus Settings</b>
+<br><hr><br>
+Maximum Number of 'Watch List' items displayed:
+<select id="numList">
+ <option value="10">10</option>
+ <option value="20">20</option>
+ <option value="50">50</option>
+</select>
+<br>
+<br>
+<input id = "checkbox" type="checkbox" name="allrev"/> Include multiple revisions of the same page?<br />
+<br><br><hr>
+<button onclick="save_options()">Save</button>&nbsp;&nbsp;&nbsp;<button onclick="close_options()">Close</button>
+</div>
+</body>
+</html>
