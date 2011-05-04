@@ -32,18 +32,14 @@ font-style: italic;
 
 var request = new XMLHttpRequest();
 
-
 query = "http://en.wikipedia.org/w/api.php?action=feedwatchlist&hours=72";
 
 if(localStorage["disp_all_rev"]=="true")
    query +="&allrev";
 
-
 request.open("GET",query,true);
-
 request.onload = showlist;
 request.send();
-
 function showlist () {
 var watchlist = request.responseXML.getElementsByTagName("item");
 var aSettingsLink = document.createElement("a");
@@ -54,8 +50,7 @@ var end = parseInt(localStorage["num_display_elements"]);
 if (watchlist.length < end ){
  end = watchlist.length;
 } 
-//for (var i = 0, temp; temp = watchlist[i]; i++){
-  for (var i =0; i < end;i++){
+for (var i =0; i < end;i++){
    temp = watchlist[i]
    var iDiv = document.createElement("div")
 
@@ -76,37 +71,22 @@ if (watchlist.length < end ){
    return;
    
 }
-
-   
-
-
    var pHistoryLink = document.createElement("a");
 
    pHistoryLink.setAttribute('href',"http://en.wikipedia.org/w/index.php?title="+temp.childNodes[1].textContent+"&action=history");
    pHistoryLink.setAttribute('target',"_blank");
    pHistoryLink.innerText = temp.childNodes[9].textContent;
-   
    var pChangedOn = document.createTextNode("Changed on (Click to see history): ");
    //var pClickHere = document.createTextNode("(Click to see history)");
-   
    pText.appendChild(pChangedOn);
    pText.appendChild(pHistoryLink);
    //pText.appendChild(pClickHere);
-
    pTitleLink.setAttribute('href',temp.childNodes[5].textContent);
    pTitleLink.setAttribute('target',"_blank");
    pTitleLink.innerText = temp.childNodes[1].textContent;
-   
-   
    iDiv.appendChild(pTitleLink);
    iDiv.appendChild(pText);
-   
    document.body.appendChild(iDiv);
 }
 }
-
-				
-
-
-
 </script>
