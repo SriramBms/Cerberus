@@ -1,3 +1,4 @@
+/* Broken and needs a fix */
 This is a Chrome Extension to keep track of Wikipedia articles on your watchlist.
 
 1. Install the .crx file.
